@@ -4,7 +4,7 @@ import patientController from '../controllers/patientController.js';
 
 const router = new Router();
 
-router.post('/');
+router.post('/', patientController.create);
 router.post('/edit/:id');
 router.get('/', patientController.getOne);
 router.get('/:id');

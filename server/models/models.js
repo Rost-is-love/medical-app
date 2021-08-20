@@ -29,4 +29,4 @@ Name.belongsTo(Patient);
 Address.hasMany(Patient);
 Patient.belongsTo(Address);
 
-export default { Patient, Name, Address };
+export { Patient, Name, Address };

@@ -23,10 +23,10 @@ const Address = sequelize.define('address', {
   line: { type: DataTypes.STRING, allowNull: false },
 });
 
-Patient.hasOne(Name);
+Patient.hasOne(Name, { onDelete: 'CASCADE', hooks: true });
 Name.belongsTo(Patient);
 
-Address.hasMany(Patient);
-Patient.belongsTo(Address);
+Patient.hasOne(Address, { onDelete: 'CASCADE', hooks: true });
+Address.belongsTo(Patient);
 
 export { Patient, Name, Address };

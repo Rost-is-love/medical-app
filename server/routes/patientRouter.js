@@ -6,8 +6,7 @@ const router = new Router();
 
 router.post('/', patientController.create);
 router.post('/edit/:id');
-router.get('/', patientController.getOne);
-router.get('/:id');
-router.delete('/:id');
+router.get('/', patientController.getAll);
+router.delete('/', patientController.delete);
 
 export default router;

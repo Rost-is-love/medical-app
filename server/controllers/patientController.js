@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable class-methods-use-this */
 import { Patient, Name, Address } from '../models/models.js';
 import ApiError from '../error/ApiError.js';
@@ -17,22 +18,10 @@ class PatientController {
         return next(ApiError.badRequest('Patient already exists', true));
       }
 
-      let address;
-      const hasAddress = await Address.findOne({
-        where: { city, line },
-      });
-
-      if (hasAddress) {
-        address = hasAddress;
-      } else {
-        address = await Address.create({ city, line });
-      }
-
       const patient = await Patient.create({
         gender,
         birth_date: birthDate,
         chi_number: chiNumber,
-        addressId: address.id,
       });
 
       const name = await Name.create({
@@ -42,19 +31,55 @@ class PatientController {
         patientId: patient.id,
       });
 
+      const address = await Address.create({
+        city,
+        line,
+        patientId: patient.id,
+      });
+
       return res.json({ patient, address, name });
-    } catch (e) {
-      next(ApiError.badRequest(e.message));
+    } catch (error) {
+      next(ApiError.badRequest(error.message));
     }
   }
 
-  async delete(req, res) {}
+  async delete(req, res, next) {
+    const { id } = req.query;
 
-  async edit(req, res) {}
+    const patient = await Patient.findOne({
+      where: { id },
+    });
+    await patient
+      .destroy()
+      .then((response) => res.json(response))
+      .catch((error) => {
+        next(ApiError.badRequest(error.message));
+      });
+  }
 
-  async getAll(req, res) {}
+  async update(req, res) {}
 
-  async getOne(req, res, next) {}
+  async getAll(req, res, next) {
+    try {
+      let { limit, page } = req.query;
+      page = page || 1;
+      limit = limit || 29;
+      const offset = page * limit - limit;
+
+      const patients = await Patient.findAndCountAll({
+        include: [
+          { model: Name, as: 'name' },
+          { model: Address, as: 'address' },
+        ],
+        limit,
+        offset,
+      });
+
+      return res.json(patients);
+    } catch (error) {
+      next(ApiError.badRequest(error.message));
+    }
+  }
 }
 
 export default new PatientController();

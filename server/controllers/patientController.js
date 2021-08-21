@@ -44,17 +44,19 @@ class PatientController {
   }
 
   async delete(req, res, next) {
-    const { id } = req.query;
+    try {
+      const { id } = req.query;
 
-    const patient = await Patient.findOne({
-      where: { id },
-    });
-    await patient
-      .destroy()
-      .then((response) => res.json(response))
-      .catch((error) => {
-        next(ApiError.badRequest(error.message));
+      const patient = await Patient.findOne({
+        where: { id },
       });
+
+      const response = await patient.destroy();
+
+      return res.json(response);
+    } catch (error) {
+      next(ApiError.badRequest(error.message));
+    }
   }
 
   async update(req, res) {}

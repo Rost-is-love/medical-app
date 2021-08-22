@@ -59,7 +59,47 @@ class PatientController {
     }
   }
 
-  async update(req, res) {}
+  async update(req, res, next) {
+    try {
+      const { id, patientName, gender, birthDate, patientAddress, chiNumber } = req.body;
+      const [firstName, lastName, patronymic] = patientName;
+      const [city, line] = patientAddress;
+
+      const patient = await Patient.findOne({
+        where: { id },
+      });
+
+      const newPatient = await Patient.update(
+        {
+          gender,
+          birth_date: birthDate,
+          chi_number: chiNumber,
+        },
+        { returning: true, where: { id } },
+      );
+
+      const newName = await Name.update(
+        {
+          first_name: firstName,
+          last_name: lastName,
+          patronymic,
+        },
+        { returning: true, where: { patientId: patient.id } },
+      );
+
+      const newAddress = await Address.update(
+        {
+          city,
+          line,
+        },
+        { returning: true, where: { patientId: patient.id } },
+      );
+
+      Promise.all([newPatient, newName, newAddress]).then((response) => res.json(response));
+    } catch (error) {
+      next(ApiError.badRequest(error.message));
+    }
+  }
 
   async getAll(req, res, next) {
     try {

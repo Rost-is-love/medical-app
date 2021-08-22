@@ -5,7 +5,7 @@ import patientController from '../controllers/patientController.js';
 const router = new Router();
 
 router.post('/', patientController.create);
-router.post('/edit/:id');
+router.put('/update/', patientController.update);
 router.get('/', patientController.getAll);
 router.delete('/', patientController.delete);
 

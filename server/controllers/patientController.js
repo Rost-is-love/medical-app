@@ -7,7 +7,7 @@ class PatientController {
   async create(req, res, next) {
     try {
       const { patientName, gender, birthDate, patientAddress, chiNumber } = req.body;
-      const [firstName, lastName, patronymic] = patientName;
+      const [lastName, firstName, patronymic] = patientName;
       const [city, line] = patientAddress;
 
       const hasPatient = await Patient.findOne({
@@ -62,7 +62,7 @@ class PatientController {
   async update(req, res, next) {
     try {
       const { id, patientName, gender, birthDate, patientAddress, chiNumber } = req.body;
-      const [firstName, lastName, patronymic] = patientName;
+      const [lastName, firstName, patronymic] = patientName;
       const [city, line] = patientAddress;
 
       const patient = await Patient.findOne({
@@ -109,6 +109,7 @@ class PatientController {
       const offset = page * limit - limit;
 
       const patients = await Patient.findAndCountAll({
+        order: [[Name, 'last_name', 'ASC']],
         include: [
           { model: Name, as: 'name' },
           { model: Address, as: 'address' },

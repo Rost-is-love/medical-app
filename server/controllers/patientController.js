@@ -1,3 +1,5 @@
+/* eslint-disable functional/no-class */
+/* eslint-disable functional/no-let */
 /* eslint-disable consistent-return */
 /* eslint-disable class-methods-use-this */
 import { Patient, Name, Address } from '../models/models.js';

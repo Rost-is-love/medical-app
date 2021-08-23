@@ -1,8 +1,9 @@
 import ApiError from '../error/ApiError.js';
 
-export default (err, req, res) => {
+// eslint-disable-next-line no-unused-vars
+export default (err, req, res, next) => {
   if (err instanceof ApiError) {
     return res.status(err.status).json({ message: err.message, alreadyExists: err.alreadyExists });
   }
-  return res.status(500).json({ message: 'Unexpected error!' });
+  return res.status(500).json({ message: `Unexpected error: ${err.message}` });
 };

@@ -1,3 +1,5 @@
+/* eslint-disable functional/no-this-expression */
+/* eslint-disable functional/no-class */
 class ApiError extends Error {
   constructor(status, message, alreadyExists = false) {
     super();
@@ -13,8 +15,6 @@ class ApiError extends Error {
   static internal(message) {
     return new ApiError(500, message);
   }
-
-  // для сетевых ошибок
 }
 
 export default ApiError;

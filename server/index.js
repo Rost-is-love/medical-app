@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 
 import router from './routes/index.js';
+import sequelize from './db.js';
 import errorHandler from './middleware/ErrorHandlingMiddleware.js';
 
 export default async () => {
@@ -11,6 +12,9 @@ export default async () => {
   app.use('/api', router);
 
   app.use(errorHandler);
+
+  await sequelize.authenticate();
+  await sequelize.sync();
 
   return app;
 };

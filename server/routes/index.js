@@ -4,6 +4,6 @@ import patientRouter from './patientRouter.js';
 
 const router = new Router();
 
-router.use('/patient', patientRouter);
+router.use('/patients', patientRouter);
 
 export default router;

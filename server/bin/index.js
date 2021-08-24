@@ -1,4 +1,4 @@
-import getApp from '../server/index.js';
+import getApp from '../index.js';
 
 const port = process.env.PORT || 5000;
 const address = '0.0.0.0';

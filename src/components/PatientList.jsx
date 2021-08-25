@@ -6,11 +6,11 @@ import { selectPatients } from '../slices';
 
 const Patient = ({ name, birthDate }) => {
   const { t } = useTranslation();
-  const { first_name, last_name, patronymic } = name;
+  const { firstName, lastName, patronymic } = name;
   return (
     <li className="list-group-item d-flex justify-content-between align-items-center">
       <div className="d-flex justify-content-between">
-        <span className="font-weight-bold mr-3">{`${last_name} ${first_name} ${patronymic}`}</span>
+        <span className="font-weight-bold mr-3">{[lastName, firstName, patronymic].join(' ')}</span>
         <span>{birthDate}</span>
       </div>
       <Button
@@ -42,8 +42,8 @@ const PatientList = () => {
     <div className="mt-5">
       <h2>{t('patientList')}</h2>
       <ul className="list-group">
-        {patients.map(({ id, name, birth_date }) => {
-          return <Patient key={id} name={name} birthDate={birth_date} />;
+        {patients.map(({ id, name, birthDate }) => {
+          return <Patient key={id} name={name} birthDate={birthDate} />;
         })}
       </ul>
     </div>

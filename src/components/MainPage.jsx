@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 // import Channels from './Channels.jsx';
@@ -6,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import SearchForm from './SearchForm.jsx';
 import PatientList from './PatientList.jsx';
 import routes from '../routes.js';
+import api from '../api.js';
 import { actions } from '../slices';
 
 const MainPage = () => {
@@ -13,7 +13,7 @@ const MainPage = () => {
 
   useEffect(() => {
     const fetchContent = async () => {
-      const response = await axios.get(routes.patientssPath());
+      const response = await api.get(routes.patientssPath());
       const { data } = response;
 
       dispatch(actions.initPatients({ data }));

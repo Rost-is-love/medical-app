@@ -1,11 +1,17 @@
 export default {
   string: {
-    min: 'usernameLength',
-    max: 'usernameLength',
+    max: 'nameLength',
   },
   mixed: {
-    notOneOf: 'mustBeUnique',
-    oneOf: 'matchingPasswords',
+    notOneOf: 'chooseGender',
     required: 'required',
+  },
+  date: {
+    min: 'minDate',
+    max: 'maxDate',
+  },
+  number: {
+    min: 'chiError',
+    max: 'chiError',
   },
 };

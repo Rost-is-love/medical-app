@@ -23,11 +23,9 @@ const MainPage = () => {
   }, []);
 
   return (
-    <div className="row">
-      <div className="col-md-10 col-lg-8 mx-auto posts">
-        <SearchForm />
-        <PatientList />
-      </div>
+    <div className="w-100">
+      <SearchForm />
+      <PatientList />
     </div>
   );
 };

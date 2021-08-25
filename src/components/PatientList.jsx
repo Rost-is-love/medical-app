@@ -8,18 +8,18 @@ const Patient = ({ name, birthDate }) => {
   const { t } = useTranslation();
   const { first_name, last_name, patronymic } = name;
   return (
-    <li className="list-group-item d-flex justify-content-between align-items-start">
-      <span className="d-block font-weight-normal">{`${last_name} ${first_name} ${patronymic}`}</span>
-      <div>
+    <li className="list-group-item d-flex justify-content-between align-items-center">
+      <div className="d-flex justify-content-between">
+        <span className="font-weight-bold mr-3">{`${last_name} ${first_name} ${patronymic}`}</span>
         <span>{birthDate}</span>
-        <Button
-          variant="primary"
-          className="nav-link btn-block mb-2 text-left"
-          onClick={console.log('тык на конпку')}
-        >
-          {t('openCard')}
-        </Button>
       </div>
+      <Button
+        variant="primary"
+        className="nav-link text-left"
+        onClick={console.log('тык на конпку')}
+      >
+        {t('openCard')}
+      </Button>
     </li>
   );
 };
@@ -39,7 +39,7 @@ const PatientList = () => {
   }; */
 
   return (
-    <div className="col-md-10 col-lg-8 mx-auto posts">
+    <div className="mt-5">
       <h2>{t('patientList')}</h2>
       <ul className="list-group">
         {patients.map(({ id, name, birth_date }) => {

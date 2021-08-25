@@ -41,28 +41,26 @@ const SearchForm = () => {
   });
 
   return (
-    <div className="d-flex flex-column h-100">
-      <Form noValidate onSubmit={formik.handleSubmit}>
-        <InputGroup>
-          <Form.Control
-            required
-            ref={inputRef}
-            name="body"
-            aria-label="body"
-            onChange={formik.handleChange}
-            value={formik.values.body}
-            disabled={formik.isSubmitting}
-            isInvalid={!formik.isValid}
-          />
-          <InputGroup.Append>
-            <Button type="submit" variant="primary" className="btn" disabled={formik.isSubmitting}>
-              {t('search')}
-            </Button>
-          </InputGroup.Append>
-          <Form.Control.Feedback type="invalid">{t(formik.errors.body)}</Form.Control.Feedback>
-        </InputGroup>
-      </Form>
-    </div>
+    <Form noValidate onSubmit={formik.handleSubmit}>
+      <InputGroup>
+        <Form.Control
+          required
+          ref={inputRef}
+          name="body"
+          aria-label="body"
+          onChange={formik.handleChange}
+          value={formik.values.body}
+          disabled={formik.isSubmitting}
+          isInvalid={!formik.isValid}
+        />
+        <InputGroup.Append>
+          <Button type="submit" variant="primary" className="btn" disabled={formik.isSubmitting}>
+            {t('search')}
+          </Button>
+        </InputGroup.Append>
+        <Form.Control.Feedback type="invalid">{t(formik.errors.body)}</Form.Control.Feedback>
+      </InputGroup>
+    </Form>
   );
 };
 

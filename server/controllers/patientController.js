@@ -137,7 +137,6 @@ const updatePatient = async (req, res, next) => {
 
     Promise.all([newPatient, newName, newAddress]).then((response) => res.json(response));
   } catch (error) {
-    console.log(error, 'sdfsdfssdfsdf');
     next(ApiError.badRequest(error.message));
   }
 };

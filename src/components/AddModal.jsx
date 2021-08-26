@@ -83,7 +83,6 @@ const AddModal = () => {
         resetForm();
         dispatch(actions.hideModal());
       } catch (error) {
-        console.log(error.response, 'sdfsdfssdfsdf');
         if (error.isAxiosError) {
           if (!error.response) {
             setErrors({ feedback: 'networkError' });

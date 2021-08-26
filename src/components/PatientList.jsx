@@ -1,10 +1,10 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { selectPatients } from '../slices';
+import { selectPatients, selectNumberOfPatients, actions } from '../slices';
 
-const Patient = ({ name, birthDate }) => {
+const Patient = ({ name, birthDate, openModal }) => {
   const { t } = useTranslation();
   const { firstName, lastName, patronymic } = name;
   return (
@@ -13,11 +13,7 @@ const Patient = ({ name, birthDate }) => {
         <span className="font-weight-bold mr-3">{[lastName, firstName, patronymic].join(' ')}</span>
         <span>{birthDate}</span>
       </div>
-      <Button
-        variant="primary"
-        className="nav-link text-left"
-        onClick={console.log('тык на конпку')}
-      >
+      <Button variant="primary" className="nav-link text-left" onClick={openModal}>
         {t('openCard')}
       </Button>
     </li>
@@ -27,23 +23,25 @@ const Patient = ({ name, birthDate }) => {
 const PatientList = () => {
   const { t } = useTranslation();
   const patients = useSelector(selectPatients);
-  console.log(patients, 'тут должны быть пациенты');
-  /* const dispatch = useDispatch();
+  const numberOfPatients = useSelector(selectNumberOfPatients);
+  const dispatch = useDispatch();
   // prettier-ignore
-  const openModal = (type, channelId = null) => () => {
-    dispatch(actions.showModal({ type, channelId }));
+  const openModal = (type, patientId) => () => {
+    dispatch(actions.showModal({ type, patientId }));
   };
 
-  const switchChannel = (id) => () => {
-    dispatch(actions.changeCurrentChannel({ id }));
-  }; */
+  if (!numberOfPatients) {
+    return <h2 className="mt-5">{t('noPatient')}</h2>;
+  }
 
   return (
     <div className="mt-5">
       <h2>{t('patientList')}</h2>
       <ul className="list-group">
         {patients.map(({ id, name, birthDate }) => {
-          return <Patient key={id} name={name} birthDate={birthDate} />;
+          return (
+            <Patient key={id} name={name} birthDate={birthDate} openModal={openModal('card', id)} />
+          );
         })}
       </ul>
     </div>

@@ -33,6 +33,12 @@ export default {
       chiAlreadyExists: 'Пациент с таким ОМС уже существует',
       badRequest: 'Что-то пошло не так, попробуйте еще раз!',
       networkError: 'Ошибка сети',
+      patientCard: 'Карточка пациента',
+      fullName: 'Ф. И. О.',
+      birthDate: 'Дата рождения',
+      remove: 'Удалить',
+      edit: 'Редактировать',
+      noPatient: 'Список пациентов пуст',
     },
   },
 };

@@ -5,7 +5,7 @@ import { has } from 'lodash';
 
 import Header from './Header.jsx';
 import MainPage from './MainPage.jsx';
-import AddModal from './AddModal.jsx';
+import Modals from './Modals.jsx';
 
 const App = () => (
   <>
@@ -22,7 +22,7 @@ const App = () => (
         </Switch>
       </Router>
     </div>
-    <AddModal />
+    <Modals />
   </>
 );
 

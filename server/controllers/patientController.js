@@ -21,7 +21,7 @@ const createPatient = async (req, res, next) => {
       chi_number,
     } = req.body;
 
-    const line = `г.${city}, ул.${street}, д.${home}, кв.${apartment}`;
+    const line = `ул. ${street}, д. ${home} ${apartment ? ', кв.' : ''} ${apartment}`;
 
     const hasPatient = await Patient.findOne({
       where: { chi_number },
@@ -59,8 +59,8 @@ const createPatient = async (req, res, next) => {
 
 const deletePatient = async (req, res, next) => {
   try {
-    const { id } = req.query;
-
+    const { id } = req.body;
+    console.log(req.body);
     const patient = await Patient.findOne({
       where: { id },
     });

@@ -11,8 +11,8 @@ export default createSlice({
   },
   reducers: {
     initPatients: (state, { payload: { data } }) => {
-      console.log(data, 'tut data');
       const { count, rows } = data;
+
       state.numberOfPatients = count;
       state.patients = rows;
     },

@@ -9,9 +9,9 @@ import { actions } from '../slices';
 const Header = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
-  const openModal = () => {
-    dispatch(actions.showModal());
+  // prettier-ignore
+  const openModal = (type, patientId = null) => () => {
+    dispatch(actions.showModal({ type, patientId }));
   };
 
   return (
@@ -19,7 +19,7 @@ const Header = () => {
       <Navbar.Brand as={Link} to="/" className="mr-auto">
         {t('name')}
       </Navbar.Brand>
-      <Button onClick={openModal}>{t('add')}</Button>
+      <Button onClick={openModal('adding')}>{t('add')}</Button>
     </Navbar>
   );
 };

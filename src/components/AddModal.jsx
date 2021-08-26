@@ -1,19 +1,18 @@
 import * as yup from 'yup';
 import React, { useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { Modal, Form, Button, Row, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 import api from '../api.js';
 import routes from '../routes.js';
-import { selectIsVisible, actions } from '../slices';
+import { actions } from '../slices';
 
 const AddModal = () => {
   const { t } = useTranslation();
   const inputRef = useRef();
   const dispatch = useDispatch();
-  const isVisible = useSelector(selectIsVisible);
   const today = new Date();
   const maxAge = 150;
   const maxPossibleBirthDate = today.getFullYear() - maxAge;
@@ -95,7 +94,7 @@ const AddModal = () => {
   };
 
   return (
-    <Modal show={isVisible} onHide={onHide} size="lg">
+    <>
       <Modal.Header closeButton onHide={onHide}>
         <Modal.Title>{t('addPatient')}</Modal.Title>
       </Modal.Header>
@@ -287,7 +286,7 @@ const AddModal = () => {
           </Form.Group>
         </Form>
       </Modal.Body>
-    </Modal>
+    </>
   );
 };
 

@@ -30,6 +30,9 @@ export default {
       chiError: 'Номер ОМС - это 16 цифр',
       notNumber: 'Введите номер',
       cancel: 'Отменить',
+      chiAlreadyExists: 'Пациент с таким ОМС уже существует',
+      badRequest: 'Что-то пошло не так, попробуйте еще раз!',
+      networkError: 'Ошибка сети',
     },
   },
 };

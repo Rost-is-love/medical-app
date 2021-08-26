@@ -13,7 +13,7 @@ const MainPage = () => {
 
   useEffect(() => {
     const fetchContent = async () => {
-      const response = await api.get(routes.patientssPath());
+      const response = await api.get(routes.patientsPath());
       const { data } = response;
 
       dispatch(actions.initPatients({ data }));

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable functional/no-class */
 /* eslint-disable functional/no-let */
 /* eslint-disable consistent-return */
@@ -7,27 +8,39 @@ import ApiError from '../error/ApiError.js';
 
 const createPatient = async (req, res, next) => {
   try {
-    const { patientName, gender, birthDate, patientAddress, chiNumber } = req.body;
-    const [lastName, firstName, patronymic] = patientName;
-    const [city, line] = patientAddress;
+    const {
+      last_name,
+      first_name,
+      patronymic,
+      gender,
+      birth_date,
+      city,
+      street,
+      home,
+      apartment,
+      chi_number,
+    } = req.body;
+
+    const line = `г.${city}, ул.${street}, д.${home}, кв.${apartment}`;
 
     const hasPatient = await Patient.findOne({
-      where: { chi_number: chiNumber },
+      where: { chi_number },
     });
 
     if (hasPatient) {
-      return next(ApiError.badRequest('Patient already exists', true));
+      next(ApiError.conflictRequest('Patient already exists'));
+      return;
     }
 
     const patient = await Patient.create({
       gender,
-      birth_date: birthDate,
-      chi_number: chiNumber,
+      birth_date,
+      chi_number,
     });
 
     const name = await Name.create({
-      first_name: firstName,
-      last_name: lastName,
+      first_name,
+      last_name,
       patronymic,
       patientId: patient.id,
     });

@@ -1,15 +1,18 @@
 /* eslint-disable functional/no-this-expression */
 /* eslint-disable functional/no-class */
 class ApiError extends Error {
-  constructor(status, message, alreadyExists = false) {
+  constructor(status, message) {
     super();
     this.status = status;
     this.message = message;
-    this.alreadyExists = alreadyExists;
   }
 
-  static badRequest(message, alreadyExists) {
-    return new ApiError(404, message, alreadyExists);
+  static badRequest(message) {
+    return new ApiError(404, message);
+  }
+
+  static conflictRequest(message) {
+    return new ApiError(409, message);
   }
 
   static internal(message) {

@@ -1,10 +1,12 @@
 import * as yup from 'yup';
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { Modal, Form, Button, Row, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
+import api from '../api.js';
+import routes from '../routes.js';
 import { selectIsVisible, actions } from '../slices';
 
 const AddModal = () => {
@@ -15,10 +17,29 @@ const AddModal = () => {
   const today = new Date();
   const maxAge = 150;
   const maxPossibleBirthDate = today.getFullYear() - maxAge;
-  console.log(maxPossibleBirthDate);
-  /* useEffect(() => {
-    inputRef.current.focus();
-  }, []); */
+
+  const validationSchema = yup.object().shape({
+    lastName: yup.string().max(50).required(),
+    firstName: yup.string().max(50).required(),
+    patronymic: yup.string().max(50).required(),
+    birthDate: yup.date().min(maxPossibleBirthDate).max(today).required(),
+    gender: yup
+      .string()
+      .notOneOf([t('gender')])
+      .required(),
+    chiNumber: yup
+      .number()
+      .typeError(t('chiError'))
+      // eslint-disable-next-line consistent-return
+      .test('length', t('chiError'), (val) => {
+        if (val) return val.toString().length === 16;
+      })
+      .required(),
+    city: yup.string().required(),
+    street: yup.string().required(),
+    home: yup.number().typeError(t('notNumber')).required(),
+    apartment: yup.number().typeError(t('notNumber')),
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -33,31 +54,39 @@ const AddModal = () => {
       home: '',
       apartment: '',
     },
-    validationSchema: yup.object().shape({
-      lastName: yup.string().max(50).required(),
-      firstName: yup.string().max(50).required(),
-      patronymic: yup.string().max(50).required(),
-      birthDate: yup.date().min(maxPossibleBirthDate).max(today).required(),
-      gender: yup
-        .string()
-        .notOneOf([t('gender')])
-        .required(),
-      chiNumber: yup
-        .number()
-        .typeError(t('chiError'))
-        // eslint-disable-next-line consistent-return
-        .test('length', t('chiError'), (val) => {
-          if (val) return val.toString().length === 16;
-        })
-        .required(),
-      city: yup.string().required(),
-      street: yup.string().required(),
-      home: yup.number().typeError(t('notNumber')).required(),
-      apartment: yup.number().typeError(t('notNumber')),
-    }),
+    validationSchema,
     validateOnChange: false,
-    onSubmit: async (data) => {
-      console.log(data, 'из формы');
+    onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
+      try {
+        await api.post(routes.patientsPath(), values);
+        const curPatients = await api.get(routes.patientsPath());
+        const { data } = curPatients;
+
+        dispatch(actions.initPatients({ data }));
+        resetForm();
+        dispatch(actions.hideModal());
+      } catch (error) {
+        if (error.isAxiosError) {
+          if (!error.response) {
+            setErrors({ feedback: 'networkError' });
+            setSubmitting(false);
+            return;
+          }
+          if (error.response.status === 409) {
+            setErrors({ chiNumber: 'chiAlreadyExists' });
+            setSubmitting(false);
+            return;
+          }
+          if (error.response.status === 404) {
+            setErrors({ feedback: 'badRequest' });
+            setSubmitting(false);
+            return;
+          }
+          throw error;
+        } else {
+          throw error;
+        }
+      }
     },
   });
 
@@ -243,6 +272,9 @@ const AddModal = () => {
                   {t(formik.errors.apartment)}
                 </Form.Control.Feedback>
               </Col>
+            </Row>
+            <Row className="mt-4">
+              <Col className="text-danger">{t(formik.errors.feedback)}</Col>
             </Row>
             <Button
               type="submit"

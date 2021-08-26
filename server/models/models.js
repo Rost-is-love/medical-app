@@ -7,7 +7,7 @@ const Patient = sequelize.define('patient', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   gender: { type: DataTypes.STRING, allowNull: false },
   birth_date: { type: DataTypes.DATEONLY, allowNull: false },
-  chi_number: { type: DataTypes.INTEGER, unique: true, allowNull: false },
+  chi_number: { type: DataTypes.STRING, unique: true, allowNull: false },
 });
 
 const Name = sequelize.define('name', {

@@ -35,12 +35,24 @@ const PatientCardModal = () => {
 
       dispatch(actions.initPatients({ data }));
     } catch (error) {
-      console.log(error);
-      setRemovingError(error.message);
-      setIsSubmitting(false);
+      if (error.isAxiosError) {
+        if (!error.response) {
+          setRemovingError('networkError');
+          setIsSubmitting(false);
+          return;
+        }
+        if (error.response.status === 404) {
+          setRemovingError('badRequest');
+          setIsSubmitting(false);
+          return;
+        }
+        throw error;
+      } else {
+        throw error;
+      }
     }
   };
-
+  console.log(removingError);
   return (
     <>
       <Modal.Header closeButton onHide={onHide}>
@@ -68,12 +80,13 @@ const PatientCardModal = () => {
             <Row>{chiNumber}</Row>
           </Col>
         </Row>
-        <Row className="pl-3 pr-3 mb-4">
+        <Row className="pl-3 pr-3 mb-3">
           <Col>
             <Row className="font-weight-bold">{t('address')}</Row>
             <Row>{[city, line].join(' ')}</Row>
           </Col>
         </Row>
+        <div className="invalid-feedback d-block mb-4">{t(removingError)}</div>
         <Row className="pl-3 pr-3 d-flex justify-content-around">
           <Button
             className="col-5"
@@ -84,11 +97,10 @@ const PatientCardModal = () => {
           >
             {t('remove')}
           </Button>
-          <Button className="col-5" type="button" variant="primary">
+          <Button className="col-5" type="button" variant="primary" disabled={isSubmitting}>
             {t('edit')}
           </Button>
         </Row>
-        <div className="invalid-feedback d-block">{t(removingError)}</div>
       </Modal.Body>
     </>
   );

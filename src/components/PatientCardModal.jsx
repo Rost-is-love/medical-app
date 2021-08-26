@@ -22,8 +22,8 @@ const PatientCardModal = () => {
   };
   // prettier-ignore
   const openModal = (type, patientId = null) => () => {
-      dispatch(actions.showModal({ type, patientId }));
-    };
+    dispatch(actions.showModal({ type, patientId }));
+  };
 
   const removePatient = async () => {
     setRemovingError(null);

@@ -6,6 +6,9 @@
 import { Patient, Name, Address } from '../models/models.js';
 import ApiError from '../error/ApiError.js';
 
+const buildLine = (street, home, apartment) =>
+  `ул. ${street}, д. ${home}${apartment ? ', кв.' : ''} ${apartment}`;
+
 const createPatient = async (req, res, next) => {
   try {
     const {
@@ -21,7 +24,7 @@ const createPatient = async (req, res, next) => {
       chi_number,
     } = req.body;
 
-    const line = `ул. ${street}, д. ${home} ${apartment ? ', кв.' : ''} ${apartment}`;
+    const line = buildLine(street, home, apartment);
 
     const hasPatient = await Patient.findOne({
       where: { chi_number },
@@ -75,28 +78,50 @@ const deletePatient = async (req, res, next) => {
 
 const updatePatient = async (req, res, next) => {
   try {
-    const { id, patientName, gender, birthDate, patientAddress, chiNumber } = req.body;
-    const [lastName, firstName, patronymic] = patientName;
-    const [city, line] = patientAddress;
+    const {
+      id,
+      last_name,
+      first_name,
+      patronymic,
+      gender,
+      birth_date,
+      city,
+      street,
+      home,
+      apartment,
+      chi_number,
+    } = req.body;
+
+    const line = buildLine(street, home, apartment);
 
     const patient = await Patient.findOne({
       where: { id },
     });
 
+    const patientWithChi = await Patient.findOne({
+      where: { chi_number },
+    });
+
+    if (patientWithChi && patientWithChi.id !== id) {
+      next(ApiError.conflictRequest('Patient already exists'));
+      return;
+    }
+
     const newPatient = await Patient.update(
       {
         gender,
-        birth_date: birthDate,
-        chi_number: chiNumber,
+        birth_date,
+        chi_number,
       },
       { returning: true, where: { id } },
     );
 
     const newName = await Name.update(
       {
-        first_name: firstName,
-        last_name: lastName,
+        first_name,
+        last_name,
         patronymic,
+        patientId: patient.id,
       },
       { returning: true, where: { patientId: patient.id } },
     );
@@ -105,12 +130,14 @@ const updatePatient = async (req, res, next) => {
       {
         city,
         line,
+        patientId: patient.id,
       },
       { returning: true, where: { patientId: patient.id } },
     );
 
     Promise.all([newPatient, newName, newAddress]).then((response) => res.json(response));
   } catch (error) {
+    console.log(error, 'sdfsdfssdfsdf');
     next(ApiError.badRequest(error.message));
   }
 };

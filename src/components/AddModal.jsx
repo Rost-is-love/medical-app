@@ -1,18 +1,30 @@
 import * as yup from 'yup';
 import React, { useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { Modal, Form, Button, Row, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 import api from '../api.js';
 import routes from '../routes.js';
-import { actions } from '../slices';
+import { selectCurPatient, actions } from '../slices';
+
+const normalizeAddressLine = (line, type) => {
+  const [street, home, apartment] = line.split(',').map((item) => {
+    const splittedItem = item.trim().split(' ');
+    return splittedItem[splittedItem.length - 1];
+  });
+
+  const map = { street, home, apartment };
+
+  return map[type] ? map[type] : '';
+};
 
 const AddModal = () => {
   const { t } = useTranslation();
   const inputRef = useRef();
   const dispatch = useDispatch();
+  const curPatient = useSelector(selectCurPatient);
   const today = new Date();
   const maxAge = 150;
   const maxPossibleBirthDate = today.getFullYear() - maxAge;
@@ -42,22 +54,28 @@ const AddModal = () => {
 
   const formik = useFormik({
     initialValues: {
-      lastName: '',
-      firstName: '',
-      patronymic: '',
-      birthDate: '',
-      gender: '',
-      chiNumber: '',
-      city: '',
-      street: '',
-      home: '',
-      apartment: '',
+      lastName: curPatient ? curPatient.name.lastName : '',
+      firstName: curPatient ? curPatient.name.firstName : '',
+      patronymic: curPatient ? curPatient.name.patronymic : '',
+      birthDate: curPatient ? curPatient.birthDate : '',
+      gender: curPatient ? curPatient.gender : '',
+      chiNumber: curPatient ? curPatient.chiNumber : '',
+      city: curPatient ? curPatient.address.city : '',
+      street: curPatient ? normalizeAddressLine(curPatient.address.line, 'street') : '',
+      home: curPatient ? normalizeAddressLine(curPatient.address.line, 'home') : '',
+      apartment: curPatient ? normalizeAddressLine(curPatient.address.line, 'apartment') : '',
     },
     validationSchema,
     validateOnChange: false,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
-        await api.post(routes.patientsPath(), values);
+        if (curPatient) {
+          // eslint-disable-next-line no-param-reassign
+          values.id = curPatient.id;
+          await api.put(routes.updatePath(), values);
+        } else {
+          await api.post(routes.patientsPath(), values);
+        }
         const curPatients = await api.get(routes.patientsPath());
         const { data } = curPatients;
 
@@ -65,6 +83,7 @@ const AddModal = () => {
         resetForm();
         dispatch(actions.hideModal());
       } catch (error) {
+        console.log(error.response, 'sdfsdfssdfsdf');
         if (error.isAxiosError) {
           if (!error.response) {
             setErrors({ feedback: 'networkError' });
@@ -96,7 +115,7 @@ const AddModal = () => {
   return (
     <>
       <Modal.Header closeButton onHide={onHide}>
-        <Modal.Title>{t('addPatient')}</Modal.Title>
+        <Modal.Title>{curPatient ? t('editCard') : t('addPatient')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -281,7 +300,7 @@ const AddModal = () => {
               disabled={formik.isSubmitting}
               className="mt-4 w-100"
             >
-              {t('add')}
+              {t('send')}
             </Button>
           </Form.Group>
         </Form>

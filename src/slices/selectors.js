@@ -5,8 +5,8 @@ export const selectNumberOfPatients = (state) => state.patientsData.numberOfPati
 export const selectIsVisible = (state) => state.modalsData.isVisible;
 export const selectModalType = (state) => state.modalsData.type;
 
-const selectPatientId = (state) => state.modalsData.patientId;
+const selectCurPatientId = (state) => state.modalsData.patientId;
 export const selectCurPatient = createSelector(
-  [selectPatients, selectPatientId],
+  [selectPatients, selectCurPatientId],
   (patients, patientId) => patients.find(({ id }) => id === patientId),
 );

@@ -13,20 +13,24 @@ const PatientCardModal = () => {
   const [removingError, setRemovingError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(null);
   const curPatient = useSelector(selectCurPatient);
-  const { name, birthDate, gender, chiNumber, address } = curPatient;
+  const { id, name, birthDate, gender, chiNumber, address } = curPatient;
   const { lastName, firstName, patronymic } = name;
   const { city, line } = address;
 
   const onHide = () => {
     dispatch(actions.hideModal());
   };
+  // prettier-ignore
+  const openModal = (type, patientId = null) => () => {
+      dispatch(actions.showModal({ type, patientId }));
+    };
 
   const removePatient = async () => {
     setRemovingError(null);
     try {
       setIsSubmitting(true);
 
-      await api.delete(routes.patientsPath(), { data: { id: curPatient.id } });
+      await api.delete(routes.patientsPath(), { data: { id } });
       setIsSubmitting(false);
       onHide();
 
@@ -52,7 +56,7 @@ const PatientCardModal = () => {
       }
     }
   };
-  console.log(removingError);
+
   return (
     <>
       <Modal.Header closeButton onHide={onHide}>
@@ -97,7 +101,13 @@ const PatientCardModal = () => {
           >
             {t('remove')}
           </Button>
-          <Button className="col-5" type="button" variant="primary" disabled={isSubmitting}>
+          <Button
+            className="col-5"
+            type="button"
+            variant="primary"
+            onClick={openModal('adding', id)}
+            disabled={isSubmitting}
+          >
             {t('edit')}
           </Button>
         </Row>

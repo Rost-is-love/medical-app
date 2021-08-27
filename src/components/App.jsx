@@ -1,11 +1,10 @@
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
-import React, { useContext, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { has } from 'lodash';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import React from 'react';
 
 import Header from './Header.jsx';
 import MainPage from './MainPage.jsx';
 import Modals from './Modals.jsx';
+import NotFoundPage from './NotFoundPage.jsx';
 
 const App = () => (
   <>
@@ -16,9 +15,9 @@ const App = () => (
           <Route path="/" exact>
             <MainPage />
           </Route>
-          {/* <Route path="*">
+          <Route path="*">
             <NotFoundPage />
-          </Route> */}
+          </Route>
         </Switch>
       </Router>
     </div>

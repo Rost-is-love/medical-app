@@ -145,7 +145,7 @@ const getAllPatients = async (req, res, next) => {
   try {
     let { limit, page } = req.query;
     page = page || 1;
-    limit = limit || 29;
+    limit = limit || 10;
     const offset = page * limit - limit;
 
     const patients = await Patient.findAndCountAll({

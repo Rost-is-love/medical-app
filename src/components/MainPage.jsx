@@ -1,31 +1,38 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-// import Channels from './Channels.jsx';
-// import Messages from './Messages.jsx';
+import { useDispatch, useSelector } from 'react-redux';
 import SearchForm from './SearchForm.jsx';
 import PatientList from './PatientList.jsx';
+import PaginationBar from './PaginationBar.jsx';
 import routes from '../routes.js';
 import api from '../api.js';
-import { actions } from '../slices';
+import { selectPatientLimit, selectPage, actions } from '../slices';
 
 const MainPage = () => {
+  const patientLimit = useSelector(selectPatientLimit);
+  const curPage = useSelector(selectPage);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchContent = async () => {
-      const response = await api.get(routes.patientsPath());
+      const response = await api.get(routes.patientsPath(), {
+        params: {
+          limit: patientLimit,
+          page: curPage,
+        },
+      });
       const { data } = response;
 
       dispatch(actions.initPatients({ data }));
     };
 
     fetchContent();
-  }, []);
+  }, [patientLimit, curPage]);
 
   return (
-    <div className="w-100">
+    <div className="w-100 pb-4">
       <SearchForm />
       <PatientList />
+      <PaginationBar />
     </div>
   );
 };

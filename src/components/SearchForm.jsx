@@ -32,30 +32,29 @@ const SearchForm = () => {
     }),
     validateOnChange: false,
     onSubmit: async ({ body }, { setSubmitting, resetForm, setErrors }) => {
-      console.log(searchType);
       try {
         const response = await api.get(routes.searchPath(), {
           params: { body, type: searchType },
         });
         const { data } = response;
-        console.log(data);
-        /* dispatch(actions.initPatients({ data }));
-        resetForm(); */
+
+        if (data.length === 0) {
+          setErrors({ body: 'nothingFound' });
+          setSubmitting(false);
+          return;
+        }
+
+        dispatch(actions.initFoundPatients({ data }));
+        resetForm();
       } catch (error) {
-        console.log(error.response);
         if (error.isAxiosError) {
           if (!error.response) {
-            setErrors({ feedback: 'networkError' });
-            setSubmitting(false);
-            return;
-          }
-          if (error.response.status === 409) {
-            setErrors({ chiNumber: 'chiAlreadyExists' });
+            setErrors({ body: 'networkError' });
             setSubmitting(false);
             return;
           }
           if (error.response.status === 404) {
-            setErrors({ feedback: 'badRequest' });
+            setErrors({ body: 'badRequest' });
             setSubmitting(false);
             return;
           }

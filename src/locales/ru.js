@@ -46,6 +46,7 @@ export default {
       chiNumberPlaceholder: 'Напишите номер ОМС',
       lastNamePlaceholder: 'Напишите фамилию пациента',
       patientSearch: 'Поиск пациентов',
+      nothingFound: 'Ничего не найдено',
     },
   },
 };

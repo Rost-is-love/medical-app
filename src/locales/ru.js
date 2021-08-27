@@ -41,6 +41,11 @@ export default {
       noPatient: 'Список пациентов пуст',
       send: 'Отправить',
       editCard: 'Редактировать карточку',
+      searchByLastName: 'Поиск по фамилии',
+      searchByChiNumber: 'Поиск по ОМС',
+      chiNumberPlaceholder: 'Напишите номер ОМС',
+      lastNamePlaceholder: 'Напишите фамилию пациента',
+      patientSearch: 'Поиск пациентов',
     },
   },
 };

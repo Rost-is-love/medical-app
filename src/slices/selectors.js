@@ -6,6 +6,7 @@ export const selectPatientLimit = (state) => state.patientsData.patientLimit;
 export const selectPage = (state) => state.patientsData.page;
 export const selectIsVisible = (state) => state.modalsData.isVisible;
 export const selectModalType = (state) => state.modalsData.type;
+export const selectSearchType = (state) => state.searchData.type;
 
 const selectCurPatientId = (state) => state.modalsData.patientId;
 export const selectCurPatient = createSelector(

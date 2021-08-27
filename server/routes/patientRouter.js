@@ -5,6 +5,7 @@ import {
   deletePatient,
   updatePatient,
   getAllPatients,
+  searchPatients,
 } from '../controllers/patientController.js';
 
 const router = new Router();
@@ -12,6 +13,7 @@ const router = new Router();
 router.post('/', createPatient);
 router.put('/update/', updatePatient);
 router.get('/', getAllPatients);
+router.get('/search', searchPatients);
 router.delete('/', deletePatient);
 
 export default router;

@@ -3,11 +3,20 @@
 /* eslint-disable functional/no-let */
 /* eslint-disable consistent-return */
 /* eslint-disable class-methods-use-this */
+import sequelizePkg from 'sequelize';
 import { Patient, Name, Address } from '../models/models.js';
 import ApiError from '../error/ApiError.js';
 
+const { Op } = sequelizePkg;
+
 const buildLine = (street, home, apartment) =>
   `ул. ${street}, д. ${home}${apartment ? ', кв.' : ''} ${apartment}`;
+
+const normalizeName = (string) => {
+  const [lastName, firstName, patronymic] = string.trim().split(' ');
+
+  return { lastName, firstName, patronymic };
+};
 
 const createPatient = async (req, res, next) => {
   try {
@@ -164,4 +173,63 @@ const getAllPatients = async (req, res, next) => {
   }
 };
 
-export { createPatient, deletePatient, updatePatient, getAllPatients };
+const searchPatients = async (req, res, next) => {
+  try {
+    const { body, type } = req.query;
+
+    if (type === 'chiNumber') {
+      const patients = await Patient.findAll({
+        where: {
+          chi_number: {
+            [Op.like]: `${body}%`,
+          },
+        },
+        order: [[Name, 'last_name', 'ASC']],
+        include: [
+          { model: Name, as: 'name' },
+          { model: Address, as: 'address' },
+        ],
+      });
+
+      return res.json(patients);
+    }
+
+    if (type === 'name') {
+      const name = normalizeName(body);
+
+      const names = await Name.findAll({
+        where: {
+          [Op.or]: [
+            { last_name: name.lastName },
+            { first_name: name.firstName ? name.firstName : '' },
+            { patronymic: name.patronymic ? name.patronymic : '' },
+          ],
+        },
+        order: [['last_name', 'ASC']],
+      });
+
+      const ids = names.map((item) => item.patientId);
+
+      const patients = ids.map(async (id) => {
+        const patient = await Patient.findOne({
+          where: { id },
+          include: [
+            { model: Name, as: 'name' },
+            { model: Address, as: 'address' },
+          ],
+        });
+
+        return patient;
+      });
+
+      Promise.all(patients).then((response) => res.json(response));
+      return;
+    }
+
+    throw new Error('Unknown search type');
+  } catch (error) {
+    next(ApiError.badRequest(error.message));
+  }
+};
+
+export { createPatient, deletePatient, updatePatient, getAllPatients, searchPatients };

@@ -5,11 +5,18 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Pagination } from 'react-bootstrap';
 
-import { selectNumberOfPatients, selectPatientLimit, selectPage, actions } from '../slices';
+import {
+  selectNumberOfPatients,
+  selectPatientLimit,
+  selectPage,
+  selectSearchVisibility,
+  actions,
+} from '../slices';
 
 const PaginationBar = () => {
   const numberOfPatients = useSelector(selectNumberOfPatients);
   const patientLimit = useSelector(selectPatientLimit);
+  const searchVisibility = useSelector(selectSearchVisibility);
   const curPage = useSelector(selectPage);
   const dispatch = useDispatch();
   const pageCount = Math.ceil(numberOfPatients / patientLimit);
@@ -19,7 +26,7 @@ const PaginationBar = () => {
     dispatch(actions.setPage({ page }));
   };
 
-  if (pageCount < 2) {
+  if (pageCount < 2 || searchVisibility) {
     return '';
   }
 

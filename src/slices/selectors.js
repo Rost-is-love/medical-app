@@ -7,9 +7,12 @@ export const selectPage = (state) => state.patientsData.page;
 export const selectIsVisible = (state) => state.modalsData.isVisible;
 export const selectModalType = (state) => state.modalsData.type;
 export const selectSearchType = (state) => state.searchData.type;
+export const selectFoundPatients = (state) => state.searchData.patients;
+export const selectSearchVisibility = (state) => state.searchData.isVisible;
 
 const selectCurPatientId = (state) => state.modalsData.patientId;
 export const selectCurPatient = createSelector(
-  [selectPatients, selectCurPatientId],
-  (patients, patientId) => patients.find(({ id }) => id === patientId),
+  [selectPatients, selectFoundPatients, selectCurPatientId],
+  (patients, foundPatients, patientId) =>
+    [...patients, ...foundPatients].find(({ id }) => id === patientId),
 );

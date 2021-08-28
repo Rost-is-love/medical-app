@@ -45,6 +45,7 @@ const SearchForm = () => {
         }
 
         dispatch(actions.initFoundPatients({ data }));
+        dispatch(actions.setVisibility({ visibility: true }));
         resetForm();
       } catch (error) {
         if (error.isAxiosError) {

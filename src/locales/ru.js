@@ -47,6 +47,8 @@ export default {
       lastNamePlaceholder: 'Напишите фамилию пациента',
       patientSearch: 'Поиск пациентов',
       nothingFound: 'Ничего не найдено',
+      searchResult: 'Результаты поиска',
+      backToList: 'Вернуться к списку пациентов',
     },
   },
 };

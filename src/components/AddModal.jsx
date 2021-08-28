@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 import api from '../api.js';
 import routes from '../routes.js';
-import { selectCurPatient, actions } from '../slices';
+import { selectCurPatient, selectPatientLimit, selectPage, actions } from '../slices';
 
 const normalizeAddressLine = (line, type) => {
   const [street, home, apartment] = line.split(',').map((item) => {
@@ -25,6 +25,8 @@ const AddModal = () => {
   const inputRef = useRef();
   const dispatch = useDispatch();
   const curPatient = useSelector(selectCurPatient);
+  const patientLimit = useSelector(selectPatientLimit);
+  const curPage = useSelector(selectPage);
   const today = new Date();
   const maxAge = 150;
   const maxPossibleBirthDate = today.getFullYear() - maxAge;
@@ -76,7 +78,12 @@ const AddModal = () => {
         } else {
           await api.post(routes.patientsPath(), values);
         }
-        const curPatients = await api.get(routes.patientsPath());
+        const curPatients = await api.get(routes.patientsPath(), {
+          params: {
+            limit: patientLimit,
+            page: curPage,
+          },
+        });
         const { data } = curPatients;
 
         dispatch(actions.initPatients({ data }));

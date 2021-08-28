@@ -8,7 +8,7 @@
     "node": "14.x"
   },
   "scripts": {
-    "test": "echo 'no tests for this project'",
+    "test": "jest --detectOpenHandles",
     "prebuild": "rm -rf dist",
     "build-server": "NODE_ENV=production babel server --out-dir dist/server --source-maps inline && cp -r server/views dist/server/views",
     "build-frontend": "NODE_ENV=production npx webpack --mode production",
@@ -19,6 +19,14 @@
   "repository": {
     "type": "git",
     "url": "git@github.com:Rost-is-love/medical-app.git"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testRegex": ".*(test)\\.js$",
+    "setupFilesAfterEnv": ["./jest.setup.js"],
+    "transformIgnorePatterns": [
+      "node_modules/(?!variables/.*)"
+    ]
   },
   "author": "Rostislav Antonov",
   "license": "ISC",
@@ -57,12 +65,16 @@
     "@babel/core": "^7.15.0",
     "@babel/node": "^7.13.13",
     "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.15.0",
     "@babel/plugin-transform-runtime": "^7.15.0",
     "@babel/preset-env": "^7.15.0",
     "@babel/preset-react": "^7.13.13",
+    "@jest/globals": "^27.1.0",
     "babel-eslint": "^10.1.0",
+    "babel-jest": "^27.1.0",
     "babel-loader": "^8.2.2",
     "babel-plugin-module-resolver": "^4.1.0",
+    "cross-env": "^7.0.3",
     "css-loader": "^5.2.0",
     "dotenv-webpack": "^7.0.2",
     "eslint": "^7.23.0",
@@ -72,10 +84,14 @@
     "eslint-import-resolver-webpack": "^0.13.0",
     "eslint-plugin-functional": "^3.2.1",
     "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.4.0",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^3.4.1",
     "eslint-plugin-react": "^7.23.2",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "jest": "^27.1.0",
+    "jest-cli": "^27.1.0",
+    "jest-supertest-matchers": "^0.0.2",
     "mini-css-extract-plugin": "^1.4.1",
     "node-sass": "^5.0.0",
     "nodemon": "^2.0.7",
@@ -83,7 +99,9 @@
     "postcss-preset-env": "^6.7.0",
     "prettier": "^2.3.2",
     "sass-loader": "^11.0.1",
+    "sequelize-cli": "^6.2.0",
     "style-loader": "^2.0.0",
+    "supertest": "^6.1.6",
     "webpack": "^5.51.1",
     "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^3.11.2"

@@ -72,7 +72,7 @@ const createPatient = async (req, res, next) => {
 const deletePatient = async (req, res, next) => {
   try {
     const { id } = req.body;
-    console.log(req.body);
+
     const patient = await Patient.findOne({
       where: { id },
     });

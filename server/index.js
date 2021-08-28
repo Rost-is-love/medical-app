@@ -20,13 +20,12 @@ export default async () => {
   app.set('views', './server/views');
   app.set('view engine', 'pug');
   app.use('/static', express.static(path.join(domain, 'assets')));
+  app.use(errorHandler);
   app.get('/', (req, res) => {
     res.render('index.pug', {
       getPath: (filename) => `${domain}/assets/${filename}`,
     });
   });
-
-  app.use(errorHandler);
 
   await sequelize.authenticate();
   await sequelize.sync();

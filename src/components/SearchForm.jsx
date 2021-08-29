@@ -70,7 +70,7 @@ const SearchForm = () => {
   return (
     <Form noValidate onSubmit={formik.handleSubmit}>
       <h3>{t('patientSearch')}</h3>
-      <InputGroup>
+      <InputGroup className="search-form">
         <Form.Control
           required
           name="body"
@@ -79,6 +79,7 @@ const SearchForm = () => {
           disabled={formik.isSubmitting}
           isInvalid={!formik.isValid}
           placeholder={placeholder}
+          className="search-input"
         />
         <InputGroup.Append>
           <Button

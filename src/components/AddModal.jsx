@@ -127,8 +127,8 @@ const AddModal = () => {
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
           <Form.Group>
-            <Row className="mb-3">
-              <Col>
+            <Row className="mb-3 form-row">
+              <Col className="form-col">
                 <Form.Control
                   required
                   ref={inputRef}
@@ -144,7 +144,7 @@ const AddModal = () => {
                   {t(formik.errors.lastName)}
                 </Form.Control.Feedback>
               </Col>
-              <Col>
+              <Col className="form-col">
                 <Form.Control
                   required
                   ref={inputRef}
@@ -177,8 +177,8 @@ const AddModal = () => {
                 </Form.Control.Feedback>
               </Col>
             </Row>
-            <Row className="mb-3 g-3">
-              <Col>
+            <Row className="mb-3 g-3 form-row">
+              <Col className="form-col">
                 <Form.Control
                   required
                   type="date"
@@ -194,7 +194,7 @@ const AddModal = () => {
                   {t(formik.errors.birthDate)}
                 </Form.Control.Feedback>
               </Col>
-              <Col>
+              <Col className="form-col">
                 <Form.Control
                   required
                   as="select"
@@ -232,8 +232,8 @@ const AddModal = () => {
               </Col>
             </Row>
             <h4>{t('address')}</h4>
-            <Row className="mt-3">
-              <Col xs={4}>
+            <Row className="mt-3 form-row">
+              <Col xs={4} className="form-col city-input">
                 <Form.Control
                   required
                   ref={inputRef}
@@ -249,7 +249,7 @@ const AddModal = () => {
                   {t(formik.errors.city)}
                 </Form.Control.Feedback>
               </Col>
-              <Col xs={4}>
+              <Col xs={4} className="form-col street-input">
                 <Form.Control
                   required
                   ref={inputRef}
@@ -265,7 +265,7 @@ const AddModal = () => {
                   {t(formik.errors.street)}
                 </Form.Control.Feedback>
               </Col>
-              <Col>
+              <Col className="form-col">
                 <Form.Control
                   required
                   ref={inputRef}

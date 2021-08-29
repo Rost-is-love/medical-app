@@ -14,12 +14,16 @@ const Patient = ({ name, birthDate, openModal }) => {
   const { t } = useTranslation();
   const { firstName, lastName, patronymic } = name;
   return (
-    <li className="list-group-item d-flex justify-content-between align-items-center">
-      <div className="d-flex justify-content-between">
+    <li className="list-group-item d-flex justify-content-between align-items-center patient-list__item">
+      <div className="d-flex justify-content-between patient-list__info">
         <span className="font-weight-bold mr-3">{[lastName, firstName, patronymic].join(' ')}</span>
         <span>{birthDate}</span>
       </div>
-      <Button variant="primary" className="nav-link text-left" onClick={openModal}>
+      <Button
+        variant="primary"
+        className="nav-link text-left patient-list__button"
+        onClick={openModal}
+      >
         {t('openCard')}
       </Button>
     </li>
@@ -59,7 +63,7 @@ const PatientList = () => {
           ''
         )}
       </div>
-      <ul className="list-group">
+      <ul className="list-group patient-list">
         {curPatients.map(({ id, name, birthDate }) => {
           return (
             <Patient key={id} name={name} birthDate={birthDate} openModal={openModal('card', id)} />

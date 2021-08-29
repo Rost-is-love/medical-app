@@ -70,7 +70,7 @@ const PatientCardModal = () => {
             <Row>{[lastName, firstName, patronymic].join(' ')}</Row>
           </Col>
         </Row>
-        <Row className="pl-3 pr-3 mb-3">
+        <Row className="pl-3 pr-3 mb-3 second-row">
           <Col>
             <Row className="font-weight-bold">{t('birthDate')}</Row>
             <Row>{birthDate}</Row>
@@ -93,7 +93,7 @@ const PatientCardModal = () => {
         <div className="invalid-feedback d-block mb-4">{t(removingError)}</div>
         <Row className="pl-3 pr-3 d-flex justify-content-around">
           <Button
-            className="col-5"
+            className="col-5 card-btn"
             type="submit"
             variant="danger"
             onClick={removePatient}
@@ -102,7 +102,7 @@ const PatientCardModal = () => {
             {t('remove')}
           </Button>
           <Button
-            className="col-5"
+            className="col-5 card-btn"
             type="button"
             variant="primary"
             onClick={openModal('adding', id)}

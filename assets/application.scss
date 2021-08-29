@@ -1,1 +1,60 @@
 @import '~bootstrap/scss/bootstrap';
+
+@media (max-width: 576px) {
+  .patient-list {
+    &__item {
+      flex-direction: column;
+    }
+
+    &__button {
+      margin-top: 7px;
+    }
+  }
+
+  .search-form {
+    flex-direction: column;
+  }
+
+  .search-input {
+    width: 100% !important;
+    border-radius: 0 !important;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .form-col {
+    margin-bottom: 8px;
+  }
+
+  .city-input {
+    max-width: 100%;
+  }
+
+  .street-input {
+    max-width: 100%;
+  }
+
+  .second-row {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 420px) {
+  .patient-list {
+    &__info {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  .card-btn {
+    max-width: 100%;
+    flex: auto;
+
+    &:first-child {
+      margin-bottom: 8px;
+    }
+  }
+}

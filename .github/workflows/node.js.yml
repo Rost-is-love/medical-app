@@ -11,7 +11,7 @@ postgres-job:
     container: node:latest
 
     # service containers to run with `postgres-job`
-    services:
+   services:
       # label used to access the service container
       postgres:
         # Docker Hub image
@@ -36,15 +36,20 @@ postgres-job:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-  steps:
+
+    steps:
       - name: Install PostgreSQL client
-          run: |
-            apt-get update
-            apt-get install --yes postgresql-client
+        run: |
+          apt-get update
+          apt-get install --yes postgresql-client
 
       # queries database with postgres client
       - name: Query database
         run: psql -h postgres -d postgres_db -U postgres_user -c 'SELECT 1;'
+        env:
+          # postgress password is required; alternatively, you can run:
+          # `PGPASSWORD=postgres_password psql ...`
+          PGPASSWORD: postgres_password
 
       - uses: actions/checkout@v2
       - name: Use Node.js

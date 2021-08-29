@@ -2,7 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 
-import sequelize from './db.js';
 import router from './routes/index.js';
 import errorHandler from './middleware/ErrorHandlingMiddleware.js';
 
@@ -11,7 +10,7 @@ const isDevelopment = !isProduction;
 const devHost = 'http://localhost:8080';
 const domain = isDevelopment ? devHost : '';
 
-export default async () => {
+export default () => {
   const app = express();
 
   app.use(cors());
@@ -26,9 +25,6 @@ export default async () => {
       getPath: (filename) => `${domain}/assets/${filename}`,
     });
   });
-
-  await sequelize.authenticate();
-  await sequelize.sync();
 
   return app;
 };

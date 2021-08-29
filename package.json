@@ -12,7 +12,7 @@
   },
   "scripts": {
     "test": "jest --detectOpenHandles",
-    "build": "rm -rf dist && npm run build-frontend && npm run build-server && NODE_ENV=production knex migrate:latest",
+    "build": "rm -rf dist && npm run build-frontend && npm run build-server",
     "start": "NODE_ENV=production node dist/server/bin/server.js",
     "postinstall": "npm run build"
   },

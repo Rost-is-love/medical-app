@@ -76,7 +76,7 @@ const AddModal = () => {
           values.id = curPatient.id;
           await api.put(routes.updatePath(), values);
         } else {
-          const res = await api.post(routes.patientsPath(), values);
+          await api.post(routes.patientsPath(), values);
         }
         const curPatients = await api.get(routes.patientsPath(), {
           params: {

@@ -59,7 +59,7 @@ jobs:
         with:
           node-version: '14.x'
       - name: npm install, build
-       env:
+        env:
           DATABASE_URL: postgres://postgres_user:postgres_password@postgres:5432/postgres_db
           DB_NAME: postgres_db
           DB_HOST: 5432

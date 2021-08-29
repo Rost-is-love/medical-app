@@ -1,18 +1,15 @@
 /* eslint-disable jest/no-done-callback */
 /* eslint-disable functional/no-let */
 import request from 'supertest';
-import { afterAll } from '@jest/globals';
 
-import getApp from '../server/index.js';
-import dbConnection from '../server/db.js';
+import app from '../server/index.js';
 
 describe('test patients', () => {
   let server;
   let patientId;
 
   beforeEach(async () => {
-    const app = await getApp();
-    server = app.listen();
+    server = app().listen();
 
     const res = await request(server).post('/api/patients/').send({
       last_name: 'Antonov',
@@ -118,8 +115,4 @@ describe('test patients', () => {
 
     server.close();
   });
-});
-
-afterAll(() => {
-  dbConnection.close();
 });

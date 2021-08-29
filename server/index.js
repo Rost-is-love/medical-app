@@ -9,7 +9,7 @@ import errorHandler from './middleware/ErrorHandlingMiddleware.js';
 const isProduction = process.env.NODE_ENV === 'production';
 const isDevelopment = !isProduction;
 const devHost = 'http://localhost:8080';
-const domain = isDevelopment ? devHost : '';
+const filePath = isDevelopment ? `${devHost}/assets/` : '/dist/public';
 // eslint-disable-next-line no-underscore-dangle
 const __filename = fileURLToPath(import.meta.url);
 // eslint-disable-next-line no-underscore-dangle
@@ -23,11 +23,10 @@ export default () => {
   app.use('/api', router);
   app.set('views', path.join(__dirname, 'views'));
   app.set('view engine', 'pug');
-  app.use('/static', express.static(path.join(domain, 'assets')));
   app.use(errorHandler);
   app.get('/', (req, res) => {
     res.render('index.pug', {
-      getPath: (filename) => `${domain}/assets/${filename}`,
+      getPath: (filename) => `${filePath}/${filename}`,
     });
   });
 

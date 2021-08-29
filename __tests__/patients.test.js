@@ -2,14 +2,15 @@
 /* eslint-disable functional/no-let */
 import request from 'supertest';
 
-import app from '../server/index.js';
+import getApp from '../server/index.js';
 
 describe('test patients', () => {
   let server;
   // let patientId;
 
   beforeEach(async () => {
-    server = app().listen();
+    const app = await getApp();
+    server = app.listen();
 
     /* const res = await request(server).post('/api/patients/').send({
       last_name: 'Antonov',

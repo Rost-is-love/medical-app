@@ -11,10 +11,7 @@ const isDevelopment = !isProduction;
 const devHost = 'http://localhost:8080';
 const domain = isDevelopment ? devHost : '';
 
-await sequelize.authenticate();
-await sequelize.sync();
-
-export default () => {
+export default async () => {
   const app = express();
 
   app.use(cors());
@@ -29,6 +26,9 @@ export default () => {
       getPath: (filename) => `${domain}/assets/${filename}`,
     });
   });
+
+  await sequelize.authenticate();
+  await sequelize.sync();
 
   return app;
 };

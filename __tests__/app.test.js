@@ -2,13 +2,14 @@
 /* eslint-disable functional/no-let */
 import request from 'supertest';
 
-import app from '../server/index.js';
+import getApp from '../server/index.js';
 
 describe('test requestapp', () => {
   let server;
 
-  beforeEach(() => {
-    server = app().listen();
+  beforeEach(async () => {
+    const app = await getApp();
+    server = app.listen();
   });
 
   it('should runrequest app', async () => {

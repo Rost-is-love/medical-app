@@ -15,7 +15,7 @@ const SearchForm = () => {
   const dispatch = useDispatch();
 
   const placeholderMap = {
-    name: t('lastNamePlaceholder'),
+    name: t('namePlaceholder'),
     chiNumber: t('chiNumberPlaceholder'),
   };
 
@@ -101,7 +101,7 @@ const SearchForm = () => {
             isInvalid={formik.errors.type}
             className="rounded-0"
           >
-            <option>{t('searchByLastName')}</option>
+            <option>{t('searchByName')}</option>
             <option>{t('searchByChiNumber')}</option>
           </Form.Control>
           <Button type="submit" variant="primary" className="btn" disabled={formik.isSubmitting}>

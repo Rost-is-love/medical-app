@@ -3,7 +3,6 @@
 import request from 'supertest';
 
 import app from '../server/index.js';
-import db from '../server/db.js';
 
 describe('test patients', () => {
   let server;
@@ -11,8 +10,6 @@ describe('test patients', () => {
 
   beforeEach(async () => {
     server = app().listen();
-    await db.authenticate();
-    await db.sync();
 
     const res = await request(server).post('/api/patients/').send({
       last_name: 'Antonov',

@@ -1,5 +1,5 @@
-import getApp from '../index.js';
-import sequelize from '../db.js';
+import getApp from '../server/index.js';
+import sequelize from '../server/db.js';
 
 const run = async () => {
   await sequelize.authenticate();

@@ -17,7 +17,6 @@ export default () => {
   app.use(express.json());
   app.use('/api', router);
   app.set('views', './server/views');
-  app.use(express.static('public'));
   app.set('view engine', 'pug');
   app.use('/assets', express.static(path.join(domain, 'dist/public')));
   app.use(errorHandler);

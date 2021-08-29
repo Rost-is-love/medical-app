@@ -4,14 +4,16 @@ on:
   - push
   - pull_request
 
-postgres-job:
+jobs:
+  # label of the container job
+  postgres-job:
     # containers must run in Linux based operating systems
     runs-on: ubuntu-latest
     # Docker Hub image that `postgres-job` executes in
     container: node:latest
 
     # service containers to run with `postgres-job`
-   services:
+    services:
       # label used to access the service container
       postgres:
         # Docker Hub image

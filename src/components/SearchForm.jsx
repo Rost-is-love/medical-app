@@ -96,9 +96,7 @@ const SearchForm = () => {
             required
             as="select"
             onChange={changeSearchType}
-            onBlur={formik.handleBlur}
             name="type"
-            isInvalid={formik.errors.type}
             className="rounded-0"
           >
             <option>{t('searchByName')}</option>

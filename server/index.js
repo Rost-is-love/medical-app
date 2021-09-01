@@ -20,7 +20,7 @@ export default () => {
   app.set('view engine', 'pug');
   app.use('/assets', express.static(path.join(domain, 'dist/public')));
   app.use(errorHandler);
-  app.get('/', (req, res) => {
+  app.get('*', (req, res) => {
     res.render('index.pug', {
       getPath: (filename) => `${domain}/assets/${filename}`,
     });
